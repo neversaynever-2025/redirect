@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>正在跳轉中...</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 100px;
+    }
+  </style>
+</head>
+<body>
+  <h2>已開啟 YouTube 熱門影片榜 🇯🇵</h2>
+  <p>請稍候 <span id="countdown">5</span> 秒，我們將帶你前往目標頁面</p>
+
+  <script>
+    const youtubeURL = "https://charts.youtube.com/charts/TrendingVideos/jp/RightNow";
+    const params = new URLSearchParams(window.location.search);
+    const target = params.get("target");
+
+    if (!target) {
+      document.body.innerHTML = "<h2>❌ 缺少目標網址，請確認連結參數。</h2>";
+      throw new Error("Missing target");
+    }
+
+    // 開啟中繼頁
+    window.open(youtubeURL, "_blank");
+
+    // 5 秒後跳轉
+    let count = 5;
+    const el = document.getElementById("countdown");
+    const timer = setInterval(() => {
+      count--;
+      el.textContent = count;
+      if (count <= 0) {
+        clearInterval(timer);
+        window.location.href = target;
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
