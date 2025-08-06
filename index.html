@@ -2,19 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>跳轉中…</title>
+  <title>正在中轉...</title>
   <style>
     body { font-family: sans-serif; text-align: center; margin-top: 100px; }
   </style>
 </head>
 <body>
-  <h2>正在開啟 YouTube 熱門影片榜 🇯🇵（另開分頁）</h2>
-  <p>5 秒後將自動跳轉至 Product Hunt 類別頁…</p>
-  <p>請稍候 <span id="countdown">5</span> 秒</p>
+  <h2>已打開 YouTube 熱門影片榜 🇯🇵</h2>
+  <p>請稍候 <span id="countdown">5</span> 秒，我們將帶你前往目標頁面。</p>
+
   <script>
     const youtubeURL = "https://charts.youtube.com/charts/TrendingVideos/jp/RightNow";
-    const targetURL = "https://www.producthunt.com/categories?ref=header_nav";
-    window.open(youtubeURL, '_blank');
+    const params = new URLSearchParams(window.location.search);
+    const target = params.get("target");
+
+    if (!target) {
+      document.body.innerHTML = "<h2>❌ 找不到目標網址</h2>";
+      throw new Error("Missing target");
+    }
+
+    // 開啟中繼頁（YouTube）
+    window.open(youtubeURL, "_blank");
+
+    // 倒數後導向目標頁
     let count = 5;
     const el = document.getElementById("countdown");
     const timer = setInterval(() => {
@@ -22,7 +32,7 @@
       el.textContent = count;
       if (count <= 0) {
         clearInterval(timer);
-        window.location.href = targetURL;
+        window.location.href = target;
       }
     }, 1000);
   </script>
